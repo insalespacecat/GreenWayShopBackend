@@ -26,12 +26,12 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @RequestMapping("/cart")
 @Slf4j
+@SessionScope
 public class CartController {
 
-
     @GetMapping("/syncGet")
-    public Object syncGet(HttpSession session) {
-        <ArrayList<CartItem> cartBody = (ArrayList<CartItem>)session.getAttribute("cartBody");
+    public ArrayList<CartItem> syncGet(HttpSession session) {
+        ArrayList<CartItem> cartBody = (ArrayList<CartItem>)session.getAttribute("cartBody");
         log.info("Sync get request for cart of session " + session.getId());
         log.info("Returning cart " + cartBody.toString());
         return cartBody;
@@ -39,7 +39,7 @@ public class CartController {
 
     @PostMapping(value = "/syncPost", consumes = "Application/JSON")
     public void syncPost(HttpSession session, @RequestBody ArrayList<CartItem> cartBody) {
-        session.setAttribute("cartBody", cartBody);
+        session.setAttribute("cartItem", cartBody);
         log.info("Cart is saved for session " + session.getId());
         log.info("Cart body: " + session.getAttribute("cartBody").toString());
     }
