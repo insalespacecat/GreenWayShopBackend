@@ -19,13 +19,4 @@ public class LearningApplication {
         SpringApplication.run(LearningApplication.class, args);
     }
 
-    @Bean
-    public CookieSerializer cookieSerializer() {
-        DefaultCookieSerializer serializer = new DefaultCookieSerializer();
-        serializer.setCookieName("JSESSIONID");
-        serializer.setCookiePath("/");
-        serializer.setDomainNamePattern("^.+?\\.(\\w+\\.[a-z]+)$");
-        serializer.setCookieMaxAge(50000000);
-        return serializer;
-    }
 }

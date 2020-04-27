@@ -74,12 +74,6 @@
             <groupId>org.springframework.session</groupId>
             <artifactId>spring-session-jdbc</artifactId>
         </dependency>
-            <dependency>
-                <groupId>org.springframework.session</groupId>
-                <artifactId>spring-session-bom</artifactId>
-                <version>Bean-SR6</version>
-                <type>pom</type>
-            </dependency>
     </dependencies>
 
     <build>

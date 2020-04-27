@@ -8,16 +8,21 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 
-@Data
 @Entity
+@Data
 @NoArgsConstructor(access = AccessLevel.PRIVATE, force = true)
 @AllArgsConstructor
-@Table(name="products")
-public class Product implements Serializable {
-   @Id
-   private Long id;
-   private String name;
-   private Double price;
-   private String description;
+@Table(name="orders")
+public class Order implements Serializable {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    Long id;
+    ArrayList<CartItem> items;
+    Double total;
+    String name;
+    String address;
+    String phoneNumber;
+    String paymentMethod;
 }

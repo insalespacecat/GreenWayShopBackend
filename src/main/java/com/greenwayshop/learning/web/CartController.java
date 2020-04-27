@@ -5,28 +5,18 @@ import com.greenwayshop.learning.domain.CartItem;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-import org.springframework.http.ResponseEntity;
-import org.springframework.session.Session;
-import org.springframework.session.config.annotation.web.http.EnableSpringHttpSession;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.annotation.SessionScope;
-import org.springframework.web.context.request.RequestAttributes;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
-import java.util.Optional;
+
 
 
 @RestController
-@RequiredArgsConstructor
 @RequestMapping("/cart")
 @Slf4j
-@SessionScope
 public class CartController {
 
     @GetMapping("/syncGet")
@@ -38,10 +28,22 @@ public class CartController {
     }
 
     @PostMapping(value = "/syncPost", consumes = "Application/JSON")
-    public void syncPost(HttpSession session, @RequestBody ArrayList<CartItem> cartBody) {
-        session.setAttribute("cartItem", cartBody);
-        log.info("Cart is saved for session " + session.getId());
-        log.info("Cart body: " + session.getAttribute("cartBody").toString());
+    public void syncPost(HttpServletRequest request, @RequestBody ArrayList<CartItem> cartBody) {
+        request.getSession().setAttribute("cartBody", cartBody);
+        log.info("Cart is saved for session " + request.getSession().getId());
+        log.info("Cart body: " + request.getSession().getAttribute("cartBody").toString());
+    }
+    @PatchMapping("/syncPatch")
+    public ArrayList<CartItem> syncPatch(HttpServletRequest request, @RequestBody ArrayList<CartItem> cartBody) {
+        request.getSession().removeAttribute("cartBody");
+        request.getSession().setAttribute("carrBody", cartBody);
+        return cartBody;
+    }
+    @DeleteMapping("/syncDelete")
+    public ArrayList<CartItem> syncDelete(HttpServletRequest request){
+        request.getSession().removeAttribute("cartBody");
+        request.getSession().setAttribute("cartBody", new ArrayList<CartItem>());
+        return new ArrayList<CartItem>();
     }
 
 }

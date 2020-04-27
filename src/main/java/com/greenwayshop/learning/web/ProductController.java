@@ -13,7 +13,6 @@ import java.util.Optional;
 
 @Slf4j
 @RestController
-@CrossOrigin(origins = "*")
 @RequestMapping("/query")
 public class ProductController {
         private ProductRepository productRepository;
