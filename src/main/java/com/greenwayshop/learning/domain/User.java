@@ -1,19 +1,18 @@
 package com.greenwayshop.learning.domain;
 
+import com.greenwayshop.learning.enums.Role;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Data
-@NoArgsConstructor(access=AccessLevel.PRIVATE, force=true)
-@RequiredArgsConstructor
+@NoArgsConstructor
+@AllArgsConstructor
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -22,21 +21,21 @@ public class User implements UserDetails {
     private String username;
     private String password;
     private String name;
-
-    @ElementCollection(targetClass = SimpleGrantedAuthority.class, fetch = FetchType.EAGER)
-    @CollectionTable(name = "user_authorities", joinColumns = @JoinColumn(name = "user_id"))
-    private Set<SimpleGrantedAuthority> authorities = new HashSet<>();
+    private String phoneNumber;
+    private String shippingAddress;
+    private Role role;
 
     void grantCustomerAuthority(){
-        authorities.add(new SimpleGrantedAuthority("CUSTOMER"));
+        role = Role.CUSTOMER;
     }
     void grantEmployeeAuthority(){
-        authorities.add(new SimpleGrantedAuthority("EMPLOYEE"));
+        role = Role.EMPLOYEE;
     }
 
-    @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return authorities;
+        final String role = "ROLE_" + getRole().toString();
+        final GrantedAuthority userAuthority = new SimpleGrantedAuthority(role);
+        return Arrays.asList(userAuthority);
     }
 
     @Override
