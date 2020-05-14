@@ -2,11 +2,9 @@ package com.greenwayshop.learning.web;
 
 
 import com.greenwayshop.learning.domain.CartItem;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.context.annotation.SessionScope;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -17,9 +15,10 @@ import java.util.ArrayList;
 @RestController
 @RequestMapping("/cart")
 @Slf4j
+@CrossOrigin
 public class CartController {
 
-    @GetMapping("/syncGet")
+    @GetMapping(value = "/syncGet", produces = "Application/JSON")
     public ArrayList<CartItem> syncGet(HttpSession session) {
         ArrayList<CartItem> cartBody = (ArrayList<CartItem>)session.getAttribute("cartBody");
         log.info("Sync get request for cart of session " + session.getId());
@@ -33,7 +32,7 @@ public class CartController {
         log.info("Cart is saved for session " + request.getSession().getId());
         log.info("Cart body: " + request.getSession().getAttribute("cartBody").toString());
     }
-    @PatchMapping("/syncPatch")
+    @PatchMapping(value = "/syncPatch", consumes = "Application/JSON")
     public ArrayList<CartItem> syncPatch(HttpServletRequest request, @RequestBody ArrayList<CartItem> cartBody) {
         request.getSession().removeAttribute("cartBody");
         request.getSession().setAttribute("carrBody", cartBody);

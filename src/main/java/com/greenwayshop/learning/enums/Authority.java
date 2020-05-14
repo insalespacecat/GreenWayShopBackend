@@ -1,6 +1,6 @@
 package com.greenwayshop.learning.enums;
 
-public enum Role {
+public enum Authority {
     CUSTOMER,
     EMPLOYEE
 }

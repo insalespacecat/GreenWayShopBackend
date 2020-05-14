@@ -25,4 +25,7 @@ public class Order implements Serializable {
     String address;
     String phoneNumber;
     String paymentMethod;
+
+    @ManyToOne
+    User user;
 }

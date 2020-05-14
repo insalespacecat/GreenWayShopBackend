@@ -1,37 +1,38 @@
 package com.greenwayshop.learning.web;
 
 
-import com.greenwayshop.learning.api.UserRepository;
 import com.greenwayshop.learning.domain.RegistrationForm;
 
-import com.greenwayshop.learning.domain.User;
-import com.greenwayshop.learning.exception.UserAlreadyExistsException;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import com.greenwayshop.learning.exceptions.UserAlreadyExistsException;
+import com.greenwayshop.learning.services.RegistrationService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Optional;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 @RestController
 @RequestMapping("/registration")
 public class RegistrationController {
-    private UserRepository userRepository;
-    private BCryptPasswordEncoder passwordEncoder;
-    RegistrationController(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder){
-        this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
+    private RegistrationService registrationService;
+    RegistrationController(RegistrationService registrationService){
+        this.registrationService = registrationService;
     }
 
-    @PostMapping
-    public void register(@RequestBody RegistrationForm registrationForm) throws UserAlreadyExistsException {
-        Optional<User> user = Optional.of(userRepository.findUserByUsername(registrationForm.getUsername()));
-        if(user.isPresent()){
-            throw new UserAlreadyExistsException();
+    @PostMapping(consumes = "Application/JSON")
+    public void register(@RequestBody RegistrationForm registrationForm,  HttpServletResponse httpServletResponse) throws UserAlreadyExistsException, IOException {
+        Boolean registrationResult = this.registrationService.register(registrationForm);
+        if(registrationResult){
+            httpServletResponse.setContentType("application/json");
+            httpServletResponse.setCharacterEncoding("UTF-8");
+            httpServletResponse.setStatus(201);
+            httpServletResponse.getWriter().append(this.registrationService.getSuccessfulRegistrationResponseBody());
         }
-        userRepository.save(registrationForm.toUser(passwordEncoder));
+        else {
+            httpServletResponse.setStatus(500);
+        }
     }
 
 
