@@ -24,7 +24,7 @@ public class RegistrationController {
     @PostMapping(consumes = "Application/JSON")
     public void register(@RequestBody RegistrationForm registrationForm,  HttpServletResponse httpServletResponse) throws UserAlreadyExistsException, IOException {
         Boolean registrationResult = this.registrationService.register(registrationForm);
-        if(registrationResult){
+        if(registrationResult) {
             httpServletResponse.setContentType("application/json");
             httpServletResponse.setCharacterEncoding("UTF-8");
             httpServletResponse.setStatus(201);

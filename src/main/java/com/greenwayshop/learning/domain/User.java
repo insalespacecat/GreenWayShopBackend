@@ -7,6 +7,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.*;
 
 @Entity
@@ -32,7 +33,6 @@ public class User {
     @CollectionTable(name = "UserAuthorities", joinColumns = @JoinColumn(name = "UserId"))
     @Enumerated(EnumType.STRING)
     private Set<Authority> authorities = new HashSet<>();
-
     public Collection<? extends GrantedAuthority> getAuthorities(){
         return Arrays.asList(new SimpleGrantedAuthority("ROLE_CUSTOMER"));
     }
