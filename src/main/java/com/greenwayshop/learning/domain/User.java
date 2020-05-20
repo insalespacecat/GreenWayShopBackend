@@ -15,7 +15,7 @@ import java.util.*;
 @NoArgsConstructor(access=AccessLevel.PRIVATE, force=true)
 @AllArgsConstructor
 @Table(name="UserDetails")
-public class User {
+public class User implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", updatable = false, nullable = false, unique=true)
@@ -33,8 +33,8 @@ public class User {
     @CollectionTable(name = "UserAuthorities", joinColumns = @JoinColumn(name = "UserId"))
     @Enumerated(EnumType.STRING)
     private Set<Authority> authorities = new HashSet<>();
-    public Collection<? extends GrantedAuthority> getAuthorities(){
-        return Arrays.asList(new SimpleGrantedAuthority("ROLE_CUSTOMER"));
+    public Collection<Authority> getAuthorities(){
+        return authorities;
     }
 
     void grantCustomerAuthority(){
