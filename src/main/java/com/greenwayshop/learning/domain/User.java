@@ -2,8 +2,6 @@ package com.greenwayshop.learning.domain;
 
 import com.greenwayshop.learning.enums.Authority;
 import lombok.*;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.persistence.*;
@@ -33,7 +31,7 @@ public class User implements Serializable{
     @CollectionTable(name = "UserAuthorities", joinColumns = @JoinColumn(name = "UserId"))
     @Enumerated(EnumType.STRING)
     private Set<Authority> authorities = new HashSet<>();
-    public Collection<Authority> getAuthorities(){
+    public Set<Authority> getAuthorities(){
         return authorities;
     }
 
@@ -43,8 +41,6 @@ public class User implements Serializable{
     void grantEmployeeAuthority(){
         authorities.add(Authority.EMPLOYEE);
     }
-
-
 
     public static User newCustomerFromRegistrationForm(BCryptPasswordEncoder passwordEncoder, RegistrationForm registrationForm) {
         User user = new User();
