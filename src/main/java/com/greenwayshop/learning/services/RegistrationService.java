@@ -3,11 +3,8 @@ package com.greenwayshop.learning.services;
 import com.greenwayshop.learning.api.UserRepository;
 import com.greenwayshop.learning.domain.RegistrationForm;
 import com.greenwayshop.learning.domain.User;
-import com.greenwayshop.learning.exceptions.JSONCreationFailException;
 import com.greenwayshop.learning.exceptions.UserAlreadyExistsException;
 import lombok.extern.slf4j.Slf4j;
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -29,8 +26,10 @@ public class RegistrationService {
             if(user.isPresent()) {
                 throw new UserAlreadyExistsException();
             }
-        } catch (NullPointerException exc) {
+        } catch (NullPointerException nullPointerExc) {
             log.info("User is not presented in the database");
+        } catch (UserAlreadyExistsException userAlreadyExistsException) {
+            log.info("User already exists in the database");
         }
         User newUser = User.newCustomerFromRegistrationForm(passwordEncoder, registrationForm);
         try {
@@ -41,18 +40,6 @@ public class RegistrationService {
         catch(Exception exc){
             return false;
         }
-    }
-    public String getSuccessfulRegistrationResponseBody(){
-        JSONObject jsonAnswer = new JSONObject();
-        try {
-            jsonAnswer.put("status", "created")
-                    .put("code", 201)
-                    .put("details", "Successful registration");
-        } catch (JSONException ex) {
-            throw new JSONCreationFailException();
-        }
-        String stringAnswer = jsonAnswer.toString();
-        return stringAnswer;
     }
 
 }

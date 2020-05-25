@@ -1,4 +1,4 @@
 package com.greenwayshop.learning.exceptions;
 
-public class UserAlreadyExistsException extends RuntimeException {
+public class UserAlreadyExistsException extends Exception {
 }

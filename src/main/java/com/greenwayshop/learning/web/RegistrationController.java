@@ -25,10 +25,7 @@ public class RegistrationController {
     public void register(@RequestBody RegistrationForm registrationForm,  HttpServletResponse httpServletResponse) throws UserAlreadyExistsException, IOException {
         Boolean registrationResult = this.registrationService.register(registrationForm);
         if(registrationResult) {
-            httpServletResponse.setContentType("application/json");
-            httpServletResponse.setCharacterEncoding("UTF-8");
             httpServletResponse.setStatus(201);
-            httpServletResponse.getWriter().append(this.registrationService.getSuccessfulRegistrationResponseBody());
         }
         else {
             httpServletResponse.setStatus(500);

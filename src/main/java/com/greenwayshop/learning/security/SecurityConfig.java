@@ -1,9 +1,6 @@
 package com.greenwayshop.learning.security;
 
-import com.greenwayshop.learning.exceptions.JSONCreationFailException;
 import lombok.extern.slf4j.Slf4j;
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -97,21 +94,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return new AuthenticationSuccessHandler() {
             @Override
             public void onAuthenticationSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) throws IOException, ServletException {
-                JSONObject jsonAnswer = new JSONObject();
-                log.info("Authentication request for user: " + authentication.getName());
-                log.info("Authentication successful!");
-                try {
-                    jsonAnswer.put("status", "ok")
-                            .put("code", 200)
-                            .put("details", "Successful login");
-                } catch (JSONException ex) {
-                    throw new JSONCreationFailException();
-                }
-                String stringAnswer = jsonAnswer.toString();
-                log.info("RETURNING JSON ANSWER: " + stringAnswer);
-                httpServletResponse.setContentType("application/json");
-                httpServletResponse.setCharacterEncoding("UTF-8");
-                httpServletResponse.getWriter().append(stringAnswer);
                 httpServletResponse.setStatus(200);
             }
         };
@@ -121,7 +103,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             @Override
             public void handle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AccessDeniedException e) throws ServletException, IOException {
                 log.info("Access denied with exception: " + e.toString());
-                httpServletResponse.getWriter().append("");
                 httpServletResponse.setStatus(403);
             }
         };
@@ -129,19 +110,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private AuthenticationFailureHandler failureHandler() {
         return (httpServletRequest, httpServletResponse, e) -> {
-            JSONObject jsonAnswer = new JSONObject();
-            try {
-                jsonAnswer.put("status", "denied")
-                        .put("code", 404)
-                        .put("details", "USER NOT FOUND");
-            } catch (JSONException ex) {
-                throw new JSONCreationFailException();
-            }
-            String stringAnswer = jsonAnswer.toString();
-            log.info("RETURNING JSON ANSWER: " + stringAnswer);
-            httpServletResponse.setContentType("application/json");
-            httpServletResponse.setCharacterEncoding("UTF-8");
-            httpServletResponse.getWriter().append(stringAnswer);
             httpServletResponse.setStatus(404);
             log.info("Authentication failure");
             log.info(e.toString());
