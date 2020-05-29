@@ -1,18 +1,8 @@
 package com.greenwayshop.learning.domain;
 
-
-import lombok.Data;
-import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import java.util.HashSet;
-import java.util.Set;
+import lombok.*;
 
 @Data
-@Entity
 @RequiredArgsConstructor
 public class RegistrationForm {
 

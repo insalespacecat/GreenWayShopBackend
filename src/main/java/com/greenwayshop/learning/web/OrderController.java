@@ -34,9 +34,9 @@ public class OrderController {
     //Maybe it should give back Page<T> but it does not quite fit
     //Angular Material tables and shop is small, which means that
     //we won't have a harmful situation here if we leave it this way.
-    @GetMapping(value = "/getAllOrdersByUser/${userId}")
-    public List<Order> getAllOrdersByUser(@PathVariable Long userId){
-        return orderService.getAllOrdersByUserId(userId);
+    @GetMapping(value = "/getAllOrdersByUser/${username}")
+    public List<Order> getAllOrdersByUser(@PathVariable String username){
+        return orderService.getAllOrdersByUsername(username);
     }
 
     @GetMapping(value = "/last", produces = "Application/JSON")

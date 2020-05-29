@@ -24,4 +24,11 @@ public class UserService {
         checkForEmptyAndThrowResponseTypeExcIfNeeded(optUser);
         return (User) optUser.get();
     }
+
+    public User getUserInfoByUsername(String username){
+        checkForNullAndTrowResponseTypeExcIfNeeded(username);
+        Optional optUser = Optional.ofNullable(userRepository.findUserByUsername(username));
+        checkForEmptyAndThrowResponseTypeExcIfNeeded(optUser);
+        return (User) optUser.get();
+    }
 }

@@ -26,6 +26,7 @@ public class Order implements Serializable {
     String phoneNumber;
     String paymentMethod;
 
+    //This type of annotation requires entity
     @ManyToOne
-    Long userId;
+    User user;
 }
