@@ -18,13 +18,13 @@ import java.util.ArrayList;
 public class Order implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    Long id;
-    ArrayList<CartItem> items;
-    Double total;
-    String name;
-    String address;
-    String phoneNumber;
-    String paymentMethod;
+    private Long id;
+    private ArrayList<CartItem> items;
+    private Double total;
+    private String name;
+    private String address;
+    private String phoneNumber;
+    private String paymentMethod;
 
     //This type of annotation requires entity
     @ManyToOne

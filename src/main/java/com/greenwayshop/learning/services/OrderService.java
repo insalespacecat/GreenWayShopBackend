@@ -16,10 +16,12 @@ public class OrderService {
 
     private OrderRepository orderRepository;
     private UserService userService;
+    private DiscountService discountService;
 
     public void placeOrder(Order order) {
         checkForNullAndTrowResponseTypeExcIfNeeded(order);
         orderRepository.save(order);
+        discountService.patchUserDiscountByOrdersTotal(order);
     }
 
     public List<Order> getAllOrders(){

@@ -25,6 +25,7 @@ public class User implements Serializable{
     private Boolean active;
     private String phoneNumber;
     private String shippingAddress;
+    private Double ordersTotal;
     private Double discount;
 
     @ElementCollection(targetClass = Authority.class, fetch = FetchType.EAGER)

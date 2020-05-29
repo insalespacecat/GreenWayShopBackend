@@ -30,4 +30,21 @@ public class UserService {
         checkForEmptyAndThrowResponseTypeExcIfNeeded(optUser);
         return (User) optUser.get();
     }
+
+    public User patchUserInfo(User patchedUser, String username){
+        checkForNullAndTrowResponseTypeExcIfNeeded(patchedUser);
+        Optional optUser = Optional.ofNullable(userRepository.findUserByUsername(username));
+        checkForEmptyAndThrowResponseTypeExcIfNeeded(optUser);
+        User user = (User) optUser.get();
+        if(patchedUser.getShippingAddress() != user.getShippingAddress()){
+            user.setShippingAddress(patchedUser.getShippingAddress());
+        }
+        if(patchedUser.getName() != user.getName()){
+            user.setName(patchedUser.getName());
+        }
+        if(patchedUser.getPhoneNumber() != user.getPhoneNumber()){
+            user.setPhoneNumber(patchedUser.getPhoneNumber());
+        }
+        return userRepository.save(user);
+    }
 }
