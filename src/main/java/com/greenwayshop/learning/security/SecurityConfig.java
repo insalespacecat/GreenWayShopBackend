@@ -1,5 +1,6 @@
 package com.greenwayshop.learning.security;
 
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -31,14 +32,11 @@ import java.io.IOException;
         prePostEnabled = true,
         securedEnabled = true,
         jsr250Enabled = true)
+@AllArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
     private final DataSource dataSource;
 
-    SecurityConfig( DataSource dataSource){
-        this.dataSource = dataSource;
-    }
     @Bean
     public BCryptPasswordEncoder encoder(){
         return new BCryptPasswordEncoder();

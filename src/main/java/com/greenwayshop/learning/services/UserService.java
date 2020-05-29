@@ -2,6 +2,7 @@ package com.greenwayshop.learning.services;
 
 import com.greenwayshop.learning.api.UserRepository;
 import com.greenwayshop.learning.domain.User;
+import lombok.AllArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
@@ -11,12 +12,10 @@ import static com.greenwayshop.learning.services.CheckMethods.checkForEmptyAndTh
 import static com.greenwayshop.learning.services.CheckMethods.checkForNullAndTrowResponseTypeExcIfNeeded;
 
 @Service
+@AllArgsConstructor
 public class UserService {
 
     private UserRepository userRepository;
-    UserService(UserRepository userRepository){
-        this.userRepository = userRepository;
-    }
 
     public User getUserInfoByAuthentication(Authentication authentication){
         checkForNullAndTrowResponseTypeExcIfNeeded(authentication);

@@ -4,6 +4,7 @@ package com.greenwayshop.learning.web;
 import com.greenwayshop.learning.api.OrderRepository;
 import com.greenwayshop.learning.domain.Order;
 import com.greenwayshop.learning.services.OrderService;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,12 +14,10 @@ import java.util.List;
 @RequestMapping("/order")
 @Slf4j
 @CrossOrigin
+@AllArgsConstructor
 public class OrderController {
 
     private OrderService orderService;
-    OrderController(OrderService orderService){
-        this.orderService = orderService;
-    }
 
     @PostMapping(consumes = "Application/JSON")
     public void placeOrder(@RequestBody Order order){

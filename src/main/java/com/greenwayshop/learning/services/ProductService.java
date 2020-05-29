@@ -2,6 +2,8 @@ package com.greenwayshop.learning.services;
 
 import com.greenwayshop.learning.api.ProductRepository;
 import com.greenwayshop.learning.domain.Product;
+import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import static com.greenwayshop.learning.services.CheckMethods.checkForEmptyAndThrowResponseTypeExcIfNeeded;
@@ -12,12 +14,10 @@ import java.util.Optional;
 
 @Service
 @Slf4j
+@AllArgsConstructor
 public class ProductService {
 
     ProductRepository productRepository;
-    ProductService(ProductRepository productRepository){
-        this.productRepository = productRepository;
-    }
 
     public Product patch(Long productId, Product patch){
         Optional optProduct = Optional.ofNullable(productRepository.findById(productId));
