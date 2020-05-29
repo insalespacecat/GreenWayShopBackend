@@ -3,27 +3,26 @@ package com.greenwayshop.learning.services;
 import com.greenwayshop.learning.api.ProductRepository;
 import com.greenwayshop.learning.domain.Product;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import static com.greenwayshop.learning.services.CheckMethods.checkForEmptyAndThrowResponseTypeExcIfNeeded;
+import static com.greenwayshop.learning.services.CheckMethods.checkForNullAndTrowResponseTypeExcIfNeeded;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
 @Slf4j
 public class ProductService {
 
-    @Autowired
     ProductRepository productRepository;
+    ProductService(ProductRepository productRepository){
+        this.productRepository = productRepository;
+    }
 
-    public ResponseEntity<Product> patch(Long productId, Product patch){
-        Optional<Product> productOpt = productRepository.findById(productId);
-        log.info("patch request");
-        if(productOpt.isEmpty()) {
-            return new ResponseEntity<Product>(patch, HttpStatus.NOT_FOUND);
-        }
-        Product productToPatch = productOpt.get();
+    public Product patch(Long productId, Product patch){
+        Optional optProduct = Optional.ofNullable(productRepository.findById(productId));
+        checkForEmptyAndThrowResponseTypeExcIfNeeded(optProduct);
+        Product productToPatch = (Product) optProduct.get();
         log.info(productToPatch.toString());
         if(patch.getName() != null){
             productToPatch.setName(patch.getName());
@@ -35,6 +34,20 @@ public class ProductService {
         if(patch.getDescription() != null){
             productToPatch.setDescription(patch.getDescription());
         }
-        return new ResponseEntity<Product>((Product)productRepository.save(productToPatch), HttpStatus.ACCEPTED);
+        return productRepository.save(productToPatch);
+    }
+
+    public Product saveProduct(Product product){
+        checkForNullAndTrowResponseTypeExcIfNeeded(product);
+        product.setId(null);
+        return productRepository.save(product);
+    }
+
+    public void deleteProductById(Long productId){
+        productRepository.deleteById(productId);
+    }
+
+    public List<Product> getAllProducts(){
+        return productRepository.findAll();
     }
 }

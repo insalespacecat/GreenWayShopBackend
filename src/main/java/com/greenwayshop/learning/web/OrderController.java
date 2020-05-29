@@ -15,23 +15,20 @@ import java.util.List;
 @CrossOrigin
 public class OrderController {
 
-    private OrderRepository orderRepository;
     private OrderService orderService;
-    OrderController(OrderRepository orderRepository, OrderService orderService){
+    OrderController(OrderService orderService){
         this.orderService = orderService;
-        this.orderRepository = orderRepository;
     }
 
     @PostMapping(consumes = "Application/JSON")
     public void placeOrder(@RequestBody Order order){
-        log.info("order: " + order.toString());
-        orderRepository.save(order);
+        orderService.placeOrder(order);
     }
 
     //TODO: Pagination here!
     @GetMapping(value = "/getAll", produces = "Application/JSON")
     public List<Order> getAllOrders(){
-        return orderRepository.findAll();
+        return orderService.getAllOrders();
     }
 
     //Maybe it should give back Page<T> but it does not quite fit
@@ -44,8 +41,6 @@ public class OrderController {
 
     @GetMapping(value = "/last", produces = "Application/JSON")
     public Order getLastOrder(){
-        Order order = orderRepository.findTopByOrderByIdDesc();
-        log.info(order.toString());
-        return order;
+        return orderService.getTopOrderByIdDesc();
     }
 }
