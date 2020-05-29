@@ -16,18 +16,50 @@ import java.util.Optional;
 @Slf4j
 @AllArgsConstructor
 public class RegistrationService {
-    UserRepository userRepository;
+
+    private UserRepository userRepository;
     private BCryptPasswordEncoder passwordEncoder;
+    //TODO: Replace Boilerplate with properties
+    private String BoilerplateEmployeeKey = "EmpKey1894";
 
-
-    public void register(RegistrationForm registrationForm){
+    public void registerUser(RegistrationForm registrationForm){
         Optional<User> user = Optional.ofNullable(userRepository.findUserByUsername(registrationForm.getUsername()));
         if(user.isPresent()) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Username is occupied");
         }
+        userRepository.save(RegistrationFormToUser(registrationForm));
+    }
+    public void registerEmployee(RegistrationForm registrationForm){
+        Optional<User> user = Optional.ofNullable(userRepository.findUserByUsername(registrationForm.getUsername()));
+        if(user.isPresent()) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Username is occupied");
+        }
+        userRepository.save(RegistrationFormToEmployee(registrationForm));
+    }
 
-        User newUser = User.newCustomerFromRegistrationForm(passwordEncoder, registrationForm);
-        userRepository.save(newUser);
+
+    private User RegistrationFormToUser(RegistrationForm registrationForm) {
+        User user = new User(
+                null, registrationForm.getUsername(), passwordEncoder.encode(registrationForm.getPassword()),
+                registrationForm.getName(), true, registrationForm.getPhoneNumber(),
+                registrationForm.getShippingAddress(), 0.0, 5.0, null
+        );
+        user.grantCustomerAuthority();
+        return user;
+    }
+
+    private User RegistrationFormToEmployee(RegistrationForm registrationForm){
+        if(!BoilerplateEmployeeKey.equals(registrationForm.getEmployeeKey())){
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Employee key is not right!");
+        }
+        User user = new User(
+                null, registrationForm.getUsername(), passwordEncoder.encode(registrationForm.getPassword()),
+                registrationForm.getName(), true, registrationForm.getPhoneNumber(),
+                registrationForm.getShippingAddress(), 0.0, 7.0, null
+        );
+        user.grantCustomerAuthority();
+        user.grantEmployeeAuthority();
+        return user;
     }
 
 }

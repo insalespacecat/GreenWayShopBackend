@@ -2,7 +2,6 @@ package com.greenwayshop.learning.domain;
 
 import com.greenwayshop.learning.enums.Authority;
 import lombok.*;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -36,23 +35,11 @@ public class User implements Serializable{
         return authorities;
     }
 
-    void grantCustomerAuthority(){
+    public void grantCustomerAuthority(){
         authorities.add(Authority.CUSTOMER);
     }
-    void grantEmployeeAuthority(){
+    public void grantEmployeeAuthority(){
         authorities.add(Authority.EMPLOYEE);
     }
 
-    public static User newCustomerFromRegistrationForm(BCryptPasswordEncoder passwordEncoder, RegistrationForm registrationForm) {
-        User user = new User();
-        user.setUsername(registrationForm.getUsername());
-        user.setPassword(passwordEncoder.encode(registrationForm.getPassword()));
-        user.setName(registrationForm.getName());
-        user.grantCustomerAuthority();
-        user.setActive(true);
-        user.setShippingAddress(registrationForm.getShippingAddress());
-        user.setPhoneNumber(registrationForm.getPhoneNumber());
-        user.setDiscount(5.0);
-        return user;
-    }
 }

@@ -1,6 +1,7 @@
 package com.greenwayshop.learning.domain;
 
 import lombok.*;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Data
 @RequiredArgsConstructor
@@ -11,16 +12,6 @@ public class RegistrationForm {
     private String name;
     private String phoneNumber;
     private String shippingAddress;
-/*
-    public User toUser(BCryptPasswordEncoder passwordEncoder) {
-        User user = new User();
-        user.setUsername(username);
-        user.setPassword(passwordEncoder.encode(password));
-        user.setName(name);
-        user.setPhoneNumber(phoneNumber);
-        user.setShippingAddress(shippingAddress);
-        user.grantCustomerAuthority();
-        return user;
-    }
-    */
+    private String employeeKey;
+
 }

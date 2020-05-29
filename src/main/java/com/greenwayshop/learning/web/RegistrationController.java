@@ -17,8 +17,12 @@ public class RegistrationController {
 
     private RegistrationService registrationService;
 
-    @PostMapping(consumes = "Application/JSON")
+    @PostMapping(consumes = "application/json")
     public void register(@RequestBody RegistrationForm registrationForm) {
-        registrationService.register(registrationForm);
+        registrationService.registerUser(registrationForm);
+    }
+    @PostMapping(value = "/employee", consumes = "application/json")
+    public void registerEmployee(@RequestBody RegistrationForm registrationForm){
+        registrationService.registerEmployee(registrationForm);
     }
 }
