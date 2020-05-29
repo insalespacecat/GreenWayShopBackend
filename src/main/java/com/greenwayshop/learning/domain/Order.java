@@ -27,5 +27,5 @@ public class Order implements Serializable {
     String paymentMethod;
 
     @ManyToOne
-    User user;
+    Long userId;
 }

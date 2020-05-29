@@ -3,10 +3,11 @@ package com.greenwayshop.learning.web;
 
 import com.greenwayshop.learning.api.OrderRepository;
 import com.greenwayshop.learning.domain.Order;
+import com.greenwayshop.learning.services.OrderService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping("/order")
@@ -15,7 +16,9 @@ import java.util.ArrayList;
 public class OrderController {
 
     private OrderRepository orderRepository;
-    OrderController(OrderRepository orderRepository){
+    private OrderService orderService;
+    OrderController(OrderRepository orderRepository, OrderService orderService){
+        this.orderService = orderService;
         this.orderRepository = orderRepository;
     }
 
@@ -24,11 +27,22 @@ public class OrderController {
         log.info("order: " + order.toString());
         orderRepository.save(order);
     }
-    @GetMapping(produces = "Application/JSON")
-    public ArrayList<Order> getAllOrders(){
+
+    //TODO: Pagination here!
+    @GetMapping(value = "/getAll", produces = "Application/JSON")
+    public List<Order> getAllOrders(){
         return orderRepository.findAll();
     }
-    @GetMapping("/last")
+
+    //Maybe it should give back Page<T> but it does not quite fit
+    //Angular Material tables and shop is small, which means that
+    //we won't have a harmful situation here if we leave it this way.
+    @GetMapping(value = "/getAllOrdersByUser/${userId}")
+    public List<Order> getAllOrdersByUser(@PathVariable Long userId){
+        return orderService.getAllOrdersByUserId(userId);
+    }
+
+    @GetMapping(value = "/last", produces = "Application/JSON")
     public Order getLastOrder(){
         Order order = orderRepository.findTopByOrderByIdDesc();
         log.info(order.toString());
