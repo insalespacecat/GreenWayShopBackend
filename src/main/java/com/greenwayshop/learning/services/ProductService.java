@@ -3,11 +3,10 @@ package com.greenwayshop.learning.services;
 import com.greenwayshop.learning.api.ProductRepository;
 import com.greenwayshop.learning.domain.Product;
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import static com.greenwayshop.learning.services.CheckMethods.checkForEmptyAndThrowResponseTypeExcIfNeeded;
-import static com.greenwayshop.learning.services.CheckMethods.checkForNullAndTrowResponseTypeExcIfNeeded;
+import static com.greenwayshop.learning.services.CheckMethods.checkForEmptyAndThrowResponseTypeExcIfRequired;
+import static com.greenwayshop.learning.services.CheckMethods.checkForNullAndTrowResponseTypeExcIfRequired;
 
 import java.util.List;
 import java.util.Optional;
@@ -21,7 +20,7 @@ public class ProductService {
 
     public Product patch(Long productId, Product patch){
         Optional optProduct = Optional.ofNullable(productRepository.findById(productId));
-        checkForEmptyAndThrowResponseTypeExcIfNeeded(optProduct);
+        checkForEmptyAndThrowResponseTypeExcIfRequired(optProduct);
         Product productToPatch = (Product) optProduct.get();
         log.info(productToPatch.toString());
         if(patch.getName() != null){
@@ -38,7 +37,7 @@ public class ProductService {
     }
 
     public Product saveProduct(Product product){
-        checkForNullAndTrowResponseTypeExcIfNeeded(product);
+        checkForNullAndTrowResponseTypeExcIfRequired(product);
         product.setId(null);
         return productRepository.save(product);
     }

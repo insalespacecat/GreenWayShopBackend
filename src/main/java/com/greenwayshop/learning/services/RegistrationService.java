@@ -3,6 +3,7 @@ package com.greenwayshop.learning.services;
 import com.greenwayshop.learning.api.UserRepository;
 import com.greenwayshop.learning.domain.RegistrationForm;
 import com.greenwayshop.learning.domain.User;
+import com.greenwayshop.learning.properties.AdministrationProperties;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -19,8 +20,7 @@ public class RegistrationService {
 
     private UserRepository userRepository;
     private BCryptPasswordEncoder passwordEncoder;
-    //TODO: Replace Boilerplate with properties
-    private String BoilerplateEmployeeKey = "EmpKey1894";
+    private AdministrationProperties administrationProperties;
 
     public void registerUser(RegistrationForm registrationForm){
         Optional<User> user = Optional.ofNullable(userRepository.findUserByUsername(registrationForm.getUsername()));
@@ -49,7 +49,7 @@ public class RegistrationService {
     }
 
     private User RegistrationFormToEmployee(RegistrationForm registrationForm){
-        if(!BoilerplateEmployeeKey.equals(registrationForm.getEmployeeKey())){
+        if(!administrationProperties.getEmployeeKey().equals(registrationForm.getEmployeeKey())){
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Employee key is not right!");
         }
         User user = new User(

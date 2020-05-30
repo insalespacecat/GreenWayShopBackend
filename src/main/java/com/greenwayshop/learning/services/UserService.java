@@ -8,8 +8,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
-import static com.greenwayshop.learning.services.CheckMethods.checkForEmptyAndThrowResponseTypeExcIfNeeded;
-import static com.greenwayshop.learning.services.CheckMethods.checkForNullAndTrowResponseTypeExcIfNeeded;
+import static com.greenwayshop.learning.services.CheckMethods.checkForEmptyAndThrowResponseTypeExcIfRequired;
+import static com.greenwayshop.learning.services.CheckMethods.checkForNullAndTrowResponseTypeExcIfRequired;
 
 @Service
 @AllArgsConstructor
@@ -18,23 +18,23 @@ public class UserService {
     private UserRepository userRepository;
 
     public User getUserInfoByAuthentication(Authentication authentication){
-        checkForNullAndTrowResponseTypeExcIfNeeded(authentication);
+        checkForNullAndTrowResponseTypeExcIfRequired(authentication);
         Optional optUser = Optional.ofNullable(userRepository.findUserByUsername(authentication.getName()));
-        checkForEmptyAndThrowResponseTypeExcIfNeeded(optUser);
+        checkForEmptyAndThrowResponseTypeExcIfRequired(optUser);
         return (User) optUser.get();
     }
 
     public User getUserInfoByUsername(String username){
-        checkForNullAndTrowResponseTypeExcIfNeeded(username);
+        checkForNullAndTrowResponseTypeExcIfRequired(username);
         Optional optUser = Optional.ofNullable(userRepository.findUserByUsername(username));
-        checkForEmptyAndThrowResponseTypeExcIfNeeded(optUser);
+        checkForEmptyAndThrowResponseTypeExcIfRequired(optUser);
         return (User) optUser.get();
     }
 
     public User patchUserInfo(User patchedUser, String username){
-        checkForNullAndTrowResponseTypeExcIfNeeded(patchedUser);
+        checkForNullAndTrowResponseTypeExcIfRequired(patchedUser);
         Optional optUser = Optional.ofNullable(userRepository.findUserByUsername(username));
-        checkForEmptyAndThrowResponseTypeExcIfNeeded(optUser);
+        checkForEmptyAndThrowResponseTypeExcIfRequired(optUser);
         User user = (User) optUser.get();
         if(patchedUser.getShippingAddress() != user.getShippingAddress()){
             user.setShippingAddress(patchedUser.getShippingAddress());

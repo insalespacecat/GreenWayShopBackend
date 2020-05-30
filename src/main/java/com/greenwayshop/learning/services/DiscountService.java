@@ -2,25 +2,27 @@ package com.greenwayshop.learning.services;
 
 import com.greenwayshop.learning.domain.Order;
 import com.greenwayshop.learning.domain.User;
+import com.greenwayshop.learning.properties.DiscountProperties;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
 @AllArgsConstructor
 public class DiscountService {
-    UserService userService;
 
-    void patchUserDiscountByOrdersTotal(Order order) {
+    UserService userService;
+    DiscountProperties discountProperties;
+
+    void checkAndUpdateUserDiscountIfRequired(Order order) {
       User user = order.getUser();
       user.setOrdersTotal(user.getOrdersTotal() + order.getTotal());
-      //TODO: Replace boilerplate discounts and totals with properties
-      if(user.getOrdersTotal() > 500){
-          user.setDiscount(10.0);
+      if(user.getOrdersTotal() > discountProperties.getTotalforlevelthree()){
+          user.setDiscount(discountProperties.getLevelthree());
           userService.patchUserInfo(user, user.getUsername());
           return;
       }
-      if(user.getOrdersTotal() > 200){
-          user.setDiscount(7.0);
+      if(user.getOrdersTotal() > discountProperties.getTotalforleveltwo()){
+          user.setDiscount(discountProperties.getLeveltwo());
           userService.patchUserInfo(user, user.getUsername());
       }
     }

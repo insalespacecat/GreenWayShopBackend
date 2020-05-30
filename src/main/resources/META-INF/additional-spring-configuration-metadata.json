@@ -1,0 +1,44 @@
+{
+  "properties": [
+    {
+      "name": "internalproperties.admin.employeeKey",
+      "type": "java.lang.String",
+      "description": "Defines the key that an employee have to enter during sign up to protect admin system from illegal outside access."
+    },
+    {
+      "name": "internalproperties.discount.levelone",
+      "type": "java.lang.Double",
+      "description": "Customer discount of level one that customer will gain after sign up."
+    },
+    {
+      "name": "internalproperties.discount.leveltwo",
+      "type": "java.lang.Double",
+      "description": "Customer discount of level two that customer will gain when total sum of his orders will exceed user total of level two."
+    },
+    {
+      "name": "internalproperties.discount.levelthree",
+      "type": "java.lang.Double",
+      "description": "Customer discount of level three that customer will gain when total sum of his orders will exceed user total of level three."
+    },
+    {
+      "name": "internalproperties.discount.employee",
+      "type": "java.lang.Double",
+      "description": "Specifies discount in the shop for accounts that have Employee authority."
+    },
+    {
+      "name": "internalproperties.discount.totalforlevelone",
+      "type": "java.lang.Double",
+      "description": "Specifies amount of money that customer have to spend overall in the shop to achieve discount of level 1."
+    },
+    {
+      "name": "internalproperties.discount.totalforleveltwo",
+      "type": "java.lang.Double",
+      "description": "Specifies amount of money that customer have to spend overall in the shop to achieve discount of level 2."
+    },
+    {
+      "name": "internalproperties.discount.totalforlevelthree",
+      "type": "java.lang.Double",
+      "description": "Specifies amount of money that user have to spend overall in the shop to achieve discount of level 3."
+    }
+  ]
+}

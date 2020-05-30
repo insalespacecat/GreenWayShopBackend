@@ -7,8 +7,8 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
-import static com.greenwayshop.learning.services.CheckMethods.checkForEmptyAndThrowResponseTypeExcIfNeeded;
-import static com.greenwayshop.learning.services.CheckMethods.checkForNullAndTrowResponseTypeExcIfNeeded;
+import static com.greenwayshop.learning.services.CheckMethods.checkForEmptyAndThrowResponseTypeExcIfRequired;
+import static com.greenwayshop.learning.services.CheckMethods.checkForNullAndTrowResponseTypeExcIfRequired;
 
 @Service
 @AllArgsConstructor
@@ -19,9 +19,9 @@ public class OrderService {
     private DiscountService discountService;
 
     public void placeOrder(Order order) {
-        checkForNullAndTrowResponseTypeExcIfNeeded(order);
+        checkForNullAndTrowResponseTypeExcIfRequired(order);
         orderRepository.save(order);
-        discountService.patchUserDiscountByOrdersTotal(order);
+        discountService.checkAndUpdateUserDiscountIfRequired(order);
     }
 
     public List<Order> getAllOrders(){
@@ -29,11 +29,11 @@ public class OrderService {
     }
 
     public List<Order> getAllOrdersByUsername(String username) {
-        checkForNullAndTrowResponseTypeExcIfNeeded(username);
+        checkForNullAndTrowResponseTypeExcIfRequired(username);
         Optional<List<Order>> optListOfOrder = orderRepository.findAllByUser(
                 userService.getUserInfoByUsername(username)
         );
-        checkForEmptyAndThrowResponseTypeExcIfNeeded(optListOfOrder);
+        checkForEmptyAndThrowResponseTypeExcIfRequired(optListOfOrder);
         return optListOfOrder.get();
     }
 
