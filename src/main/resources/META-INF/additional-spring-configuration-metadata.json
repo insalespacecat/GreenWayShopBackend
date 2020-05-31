@@ -39,6 +39,11 @@
       "name": "internalproperties.discount.totalforlevelthree",
       "type": "java.lang.Double",
       "description": "Specifies amount of money that user have to spend overall in the shop to achieve discount of level 3."
+    },
+    {
+      "name": "internalproperties.services.topSliceForOperatorViewSize",
+      "type": "java.lang.Integer",
+      "description": "Specifies amount of orders in Page for operator view."
     }
   ]
 }

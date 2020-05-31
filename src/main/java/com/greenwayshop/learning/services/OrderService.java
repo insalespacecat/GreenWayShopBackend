@@ -2,7 +2,11 @@ package com.greenwayshop.learning.services;
 
 import com.greenwayshop.learning.api.OrderRepository;
 import com.greenwayshop.learning.domain.Order;
+import com.greenwayshop.learning.properties.ServiceProperties;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
@@ -17,6 +21,7 @@ public class OrderService {
     private OrderRepository orderRepository;
     private UserService userService;
     private DiscountService discountService;
+    private ServiceProperties serviceProperties;
 
     public void placeOrder(Order order) {
         checkForNullAndTrowResponseTypeExcIfRequired(order);
@@ -39,6 +44,11 @@ public class OrderService {
 
     public Order getTopOrderByIdDesc(){
         return orderRepository.findTopByOrderByIdDesc();
+    }
+
+    public Page<Order> getTopSliceForOperatorView() {
+        Pageable pageRequest = PageRequest.of(0, serviceProperties.getTopSliceForOperatorViewSize());
+        return orderRepository.findAll(pageRequest);
     }
 
 }
