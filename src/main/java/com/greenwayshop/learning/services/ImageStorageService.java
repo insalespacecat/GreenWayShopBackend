@@ -23,9 +23,11 @@ public class ImageStorageService {
 
     public void init() {
         try {
-            Files.createDirectory(imagesPath);
+            if(Files.notExists(imagesPath)){
+                Files.createDirectory(imagesPath);
+            }
         } catch (IOException e) {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Unable to create directory for image storage!");
+            throw new RuntimeException("Image directory does not exist and its creation is failed!");
         }
     }
 
