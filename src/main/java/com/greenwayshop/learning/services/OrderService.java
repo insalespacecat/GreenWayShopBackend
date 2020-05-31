@@ -26,7 +26,7 @@ public class OrderService {
     public void placeOrder(Order order) {
         checkForNullAndTrowResponseTypeExcIfRequired(order);
         orderRepository.save(order);
-        discountService.checkAndUpdateUserDiscountIfRequired(order);
+        //discountService.checkAndUpdateUserDiscountIfRequired(order);
     }
 
     public List<Order> getAllOrders(){

@@ -30,7 +30,7 @@ public class User implements Serializable{
     @ElementCollection(targetClass = Authority.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "UserAuthorities", joinColumns = @JoinColumn(name = "UserId"))
     @Enumerated(EnumType.STRING)
-    private Set<Authority> authorities = new HashSet<>();
+    private Set<Authority> authorities = new HashSet<Authority>();
     public Set<Authority> getAuthorities(){
         return authorities;
     }

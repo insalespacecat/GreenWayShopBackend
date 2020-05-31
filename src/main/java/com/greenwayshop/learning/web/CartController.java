@@ -9,7 +9,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
-
+import java.util.List;
+import java.util.Optional;
 
 
 @RestController
@@ -20,7 +21,13 @@ public class CartController {
 
     @GetMapping(value = "/syncGet", produces = "Application/JSON")
     public ArrayList<CartItem> syncGet(HttpSession session) {
-        ArrayList<CartItem> cartBody = (ArrayList<CartItem>)session.getAttribute("cartBody");
+        ArrayList<CartItem> cartBody;
+        Optional optCartBody = Optional.ofNullable(session.getAttribute("cartBody"));
+        if(optCartBody.isPresent()) {
+            cartBody = (ArrayList<CartItem>) session.getAttribute("cartBody");
+        } else {
+            cartBody = new ArrayList<>();
+        }
         log.info("Sync get request for cart of session " + session.getId());
         log.info("Returning cart " + cartBody.toString());
         return cartBody;
