@@ -2,8 +2,10 @@ package com.greenwayshop.learning.services;
 
 import com.greenwayshop.learning.api.OrderRepository;
 import com.greenwayshop.learning.domain.Order;
+import com.greenwayshop.learning.domain.User;
 import com.greenwayshop.learning.properties.ServiceProperties;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -16,6 +18,7 @@ import static com.greenwayshop.learning.services.CheckMethods.checkForNullAndTro
 
 @Service
 @AllArgsConstructor
+@Slf4j
 public class OrderService {
 
     private OrderRepository orderRepository;

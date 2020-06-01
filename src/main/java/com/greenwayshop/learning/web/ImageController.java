@@ -4,9 +4,14 @@ package com.greenwayshop.learning.web;
 import com.greenwayshop.learning.services.ImageStorageService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Bean;
 import org.springframework.core.io.Resource;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartResolver;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
+
+import javax.servlet.MultipartConfigElement;
 
 @RestController
 @AllArgsConstructor
@@ -15,8 +20,9 @@ import org.springframework.web.multipart.MultipartFile;
 public class ImageController {
     ImageStorageService imageStorageService;
 
-    @PostMapping("/images/upload")
-    public void uploadAnImage(@RequestParam("/image")MultipartFile image){
+    @PostMapping(value = "/images/upload", consumes = "multipart/form-data")
+    public void uploadAnImage(@RequestParam(name = "file") MultipartFile image){
+        log.info("********* IMAGE IS  " + image.toString());
         imageStorageService.save(image);
     }
 
