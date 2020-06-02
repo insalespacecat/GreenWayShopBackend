@@ -19,21 +19,18 @@ public class ProductService {
     ProductRepository productRepository;
 
     public Product patch(Long productId, Product patch){
-        Optional optProduct = Optional.ofNullable(productRepository.findById(productId));
-        checkForEmptyAndThrowResponseTypeExcIfRequired(optProduct);
-        Product productToPatch = (Product) optProduct.get();
-        log.info(productToPatch.toString());
+        log.info(patch.toString());
         if(patch.getName() != null){
-            productToPatch.setName(patch.getName());
+            patch.setName(patch.getName());
         }
         if(patch.getPrice() > 0){
-            productToPatch.setPrice(patch.getPrice());
+            patch.setPrice(patch.getPrice());
 
         }
         if(patch.getDescription() != null){
-            productToPatch.setDescription(patch.getDescription());
+            patch.setDescription(patch.getDescription());
         }
-        return productRepository.save(productToPatch);
+        return productRepository.save(patch);
     }
 
     public Product saveProduct(Product product){

@@ -1,5 +1,6 @@
 package com.greenwayshop.learning.services;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpStatus;
@@ -17,6 +18,7 @@ import java.util.Objects;
 import java.util.stream.Stream;
 
 @Service
+@Slf4j
 public class ImageStorageService {
 
     private final Path imagesPath = Paths.get("images");
@@ -43,7 +45,6 @@ public class ImageStorageService {
         try {
             Path pathToFile = imagesPath.resolve(filename);
             Resource resource = new UrlResource(pathToFile.toUri());
-
             if (resource.exists() || resource.isReadable()) {
                 return resource;
             } else {
@@ -64,6 +65,15 @@ public class ImageStorageService {
 
     public void deleteAll() {
         FileSystemUtils.deleteRecursively(imagesPath.toFile());
+    }
+
+    public void delete(String filename){
+        Path pathToFile = imagesPath.resolve(filename);
+        try {
+            Files.deleteIfExists(pathToFile);
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Unable to delete the file!");
+        }
     }
 
 }

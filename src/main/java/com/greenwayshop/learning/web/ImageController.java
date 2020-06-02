@@ -22,7 +22,6 @@ public class ImageController {
 
     @PostMapping(value = "/images/upload", consumes = "multipart/form-data")
     public void uploadAnImage(@RequestParam(name = "file") MultipartFile image){
-        log.info("********* IMAGE IS  " + image.toString());
         imageStorageService.save(image);
     }
 
@@ -31,4 +30,8 @@ public class ImageController {
         return imageStorageService.load(imageName);
     }
 
+    @DeleteMapping("/images/{imageName}")
+    public void deleteAnImage(@PathVariable String imageName) {
+        this.imageStorageService.delete(imageName);
+    }
 }
