@@ -15,7 +15,7 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     //"findAll() in orderRepository clashes with findAll() in JpaRepository
     //attempting to use incompatible return type" if Optional<List<Order>> is used
     List<Order> findAll();
-    Page<Order> findAll(Pageable pageable);
+    Page<Order> findAllByOrderByIdDesc(Pageable pageable);
     Optional<List<Order>> findAllByUser(User user);
     Order findTopByOrderByIdDesc();
 }
