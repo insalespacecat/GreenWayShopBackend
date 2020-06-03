@@ -12,7 +12,7 @@ class CheckMethods {
         }
     }
     static void checkForEmptyAndThrowResponseTypeExcIfRequired(Optional optToCheck) throws ResponseStatusException{
-        if(optToCheck.isEmpty()){
+        if(!optToCheck.isPresent()){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
     }
