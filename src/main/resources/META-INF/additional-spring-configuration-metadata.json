@@ -44,6 +44,21 @@
       "name": "internalproperties.services.topSliceForOperatorViewSize",
       "type": "java.lang.Integer",
       "description": "Specifies amount of orders in Page for operator view."
+    },
+    {
+      "name": "internalproperties.services.imageBucketURL",
+      "type": "java.lang.String",
+      "description": "Amazon S3 bucket URL for storing images of products."
+    },
+    {
+      "name": "aws.accessKey",
+      "type": "java.lang.String",
+      "description": "Specifies access key for AWS IAM."
+    },
+    {
+      "name": "aws.secretKey",
+      "type": "java.lang.String",
+      "description": "Specifies secret key for AWS IAM."
     }
   ]
 }

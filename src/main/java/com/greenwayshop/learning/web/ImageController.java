@@ -1,24 +1,41 @@
 package com.greenwayshop.learning.web;
 
-
-import com.greenwayshop.learning.services.ImageStorageService;
+import com.greenwayshop.learning.services.AwsS3Service;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.annotation.Bean;
 import org.springframework.core.io.Resource;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartResolver;
-import org.springframework.web.multipart.commons.CommonsMultipartResolver;
-
-import javax.servlet.MultipartConfigElement;
+import java.io.IOException;
 
 @RestController
 @AllArgsConstructor
 @Slf4j
 @CrossOrigin
 public class ImageController {
-    ImageStorageService imageStorageService;
+
+    AwsS3Service awsS3Service;
+
+    @PostMapping(value = "/images/upload/{imageName}", consumes = "multipart/form-data")
+    public void uploadAnImage(@RequestParam(name = "file") MultipartFile image, @PathVariable String imageName) throws IOException {
+        log.info("IMAGE NAME: " + image.getName());
+        awsS3Service.uploadFileToS3(image, imageName);
+    }
+
+    @GetMapping("/images/{imageName}")
+    public Resource getTheImage(@PathVariable String imageName) throws IOException {
+        return awsS3Service.downloadS3Object(imageName);
+    }
+
+    /*
+    @DeleteMapping("/images/{imageName}")
+    public void deleteAnImage(@PathVariable String imageName) {
+        this.imageStorageService.delete(imageName);
+    }
+     */
+}
+/*
+ ImageStorageService imageStorageService;
 
     @PostMapping(value = "/images/upload", consumes = "multipart/form-data")
     public void uploadAnImage(@RequestParam(name = "file") MultipartFile image){
@@ -34,4 +51,4 @@ public class ImageController {
     public void deleteAnImage(@PathVariable String imageName) {
         this.imageStorageService.delete(imageName);
     }
-}
+ */

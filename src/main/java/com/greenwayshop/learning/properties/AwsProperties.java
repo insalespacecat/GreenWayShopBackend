@@ -5,9 +5,9 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 @Component
-@ConfigurationProperties(prefix = "internalproperties.services")
+@ConfigurationProperties(prefix = "aws")
 @Data
-public class ServiceProperties {
-    private int topSliceForOperatorViewSize = 25;
-    private String imageBucketURL = "s3://greenway-shop/";
+public class AwsProperties {
+    private String accessKey = "AKIAXTA5YW36EVRHFFNS";
+    private String secretKey = "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";
 }

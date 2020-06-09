@@ -1,4 +1,4 @@
-package com.greenwayshop.learning.services;
+/*package com.greenwayshop.learning.services;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.Resource;
@@ -10,10 +10,12 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.Objects;
 import java.util.stream.Stream;
 
@@ -35,7 +37,15 @@ public class ImageStorageService {
 
     public void save(MultipartFile file) {
         try {
-            Files.copy(file.getInputStream(), this.imagesPath.resolve(Objects.requireNonNull(file.getOriginalFilename())));
+            Files.copy(file.getInputStream(), this.imagesPath.resolve(Objects.requireNonNull(file.getOriginalFilename())), StandardCopyOption.REPLACE_EXISTING);
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Unable to save the file!");
+        }
+    }
+
+    public void save(InputStream inputStream, String filename) {
+        try {
+            Files.copy(inputStream, this.imagesPath.resolve(filename), StandardCopyOption.REPLACE_EXISTING);
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Unable to save the file!");
         }
@@ -77,3 +87,5 @@ public class ImageStorageService {
     }
 
 }
+
+ */
