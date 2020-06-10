@@ -39,6 +39,7 @@ public class OrderController {
     //we won't have a harmful situation here if we leave it this way.
     @GetMapping(value = "/getAllOrdersByUsername/{username}")
     public List<Order> getAllOrdersByUser(@PathVariable String username){
+        log.info("Giving back all orders of user " + username);
         return orderService.getAllOrdersByUsername(username);
     }
 

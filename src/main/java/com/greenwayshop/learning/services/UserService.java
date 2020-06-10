@@ -3,6 +3,7 @@ package com.greenwayshop.learning.services;
 import com.greenwayshop.learning.api.UserRepository;
 import com.greenwayshop.learning.domain.AppUser;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -18,6 +19,7 @@ import static com.greenwayshop.learning.services.CheckMethods.checkForNullAndTro
 
 @Service
 @AllArgsConstructor
+@Slf4j
 public class UserService implements UserDetailsService {
 
     private UserRepository userRepository;
@@ -30,6 +32,7 @@ public class UserService implements UserDetailsService {
     }
 
     public AppUser getUserInfoByUsername(String username){
+        log.info("USERNAME in getUserInfoByUsername is " + username);
         checkForNullAndTrowResponseTypeExcIfRequired(username);
         Optional optUser = Optional.ofNullable(userRepository.findUserByUsername(username));
         checkForEmptyAndThrowResponseTypeExcIfRequired(optUser);
