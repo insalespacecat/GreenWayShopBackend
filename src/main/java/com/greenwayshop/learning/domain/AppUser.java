@@ -12,7 +12,7 @@ import java.util.*;
 @NoArgsConstructor(access=AccessLevel.PRIVATE, force=true)
 @AllArgsConstructor
 @Table(name="UserDetails")
-public class User implements Serializable{
+public class AppUser implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", updatable = false, nullable = false, unique=true)

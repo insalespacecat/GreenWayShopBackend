@@ -1,11 +1,16 @@
 package com.greenwayshop.learning.services;
 
 import com.greenwayshop.learning.api.UserRepository;
-import com.greenwayshop.learning.domain.User;
+import com.greenwayshop.learning.domain.AppUser;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.security.core.userdetails.User;
 
+import java.util.Collections;
 import java.util.Optional;
 
 import static com.greenwayshop.learning.services.CheckMethods.checkForEmptyAndThrowResponseTypeExcIfRequired;
@@ -13,29 +18,29 @@ import static com.greenwayshop.learning.services.CheckMethods.checkForNullAndTro
 
 @Service
 @AllArgsConstructor
-public class UserService {
+public class UserService implements UserDetailsService {
 
     private UserRepository userRepository;
 
-    public User getUserInfoByAuthentication(Authentication authentication){
+    public AppUser getUserInfoByAuthentication(Authentication authentication){
         checkForNullAndTrowResponseTypeExcIfRequired(authentication);
         Optional optUser = Optional.ofNullable(userRepository.findUserByUsername(authentication.getName()));
         checkForEmptyAndThrowResponseTypeExcIfRequired(optUser);
-        return (User) optUser.get();
+        return (AppUser) optUser.get();
     }
 
-    public User getUserInfoByUsername(String username){
+    public AppUser getUserInfoByUsername(String username){
         checkForNullAndTrowResponseTypeExcIfRequired(username);
         Optional optUser = Optional.ofNullable(userRepository.findUserByUsername(username));
         checkForEmptyAndThrowResponseTypeExcIfRequired(optUser);
-        return (User) optUser.get();
+        return (AppUser) optUser.get();
     }
 
-    public User patchUserInfo(User patchedUser, String username){
+    public AppUser patchUserInfo(AppUser patchedUser, String username){
         checkForNullAndTrowResponseTypeExcIfRequired(patchedUser);
         Optional optUser = Optional.ofNullable(userRepository.findUserByUsername(username));
         checkForEmptyAndThrowResponseTypeExcIfRequired(optUser);
-        User user = (User) optUser.get();
+        AppUser user = (AppUser) optUser.get();
         if(patchedUser.getShippingAddress() != user.getShippingAddress()){
             user.setShippingAddress(patchedUser.getShippingAddress());
         }
@@ -46,5 +51,11 @@ public class UserService {
             user.setPhoneNumber(patchedUser.getPhoneNumber());
         }
         return userRepository.save(user);
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
+        AppUser user = getUserInfoByUsername(s);
+        return new User(user.getUsername(), user.getPassword(), Collections.emptyList());
     }
 }

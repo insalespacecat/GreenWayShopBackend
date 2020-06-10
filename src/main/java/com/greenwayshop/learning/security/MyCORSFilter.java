@@ -1,4 +1,4 @@
-package com.greenwayshop.learning;
+package com.greenwayshop.learning.security;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;

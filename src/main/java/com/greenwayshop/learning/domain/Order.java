@@ -28,5 +28,5 @@ public class Order implements Serializable {
 
     //This type of annotation requires entity
     @ManyToOne
-    User user;
+    AppUser user;
 }

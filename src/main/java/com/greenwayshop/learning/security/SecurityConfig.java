@@ -1,5 +1,6 @@
 package com.greenwayshop.learning.security;
 
+import com.greenwayshop.learning.services.UserService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.access.AccessDeniedHandler;
@@ -24,6 +26,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 import java.io.IOException;
 
+import static com.greenwayshop.learning.security.SecurityConstants.SIGN_UP_URL;
+
 
 @Configuration
 @EnableWebSecurity
@@ -35,24 +39,53 @@ import java.io.IOException;
 @AllArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private final DataSource dataSource;
+    private UserService userService;
 
     @Bean
-    public BCryptPasswordEncoder encoder(){
+    public BCryptPasswordEncoder encoder() {
         return new BCryptPasswordEncoder();
     }
+
     @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http.cors().and().csrf().disable().authorizeRequests()
+                .antMatchers("/registration", "/auth", "/",
+                        "/about", "/cart/*", "/order", "/query", "/registration").permitAll()
+                .and()
+                .authorizeRequests()
+                .antMatchers("/me", "/authenticated/*", "/userInfoForSession")
+                .authenticated()
+                .and()
+                .addFilter(new JWTAuthenticationFilter(authenticationManager()))
+                .addFilter(new JWTAuthorizationFilter(authenticationManager()))
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+    }
+
+    @Override
+    public void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(userService).passwordEncoder(encoder());
+    }
+}
+
+
+        /*JDBC COOKIES AUTHENTICATION CONFIG
+           @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+
+
         auth.jdbcAuthentication()
                 .dataSource(dataSource)
                 .passwordEncoder(encoder())
                 .usersByUsernameQuery("select username, password, active from user_details where username=?")
                 .authoritiesByUsernameQuery("select u.username, ua.authorities from user_details u join user_authorities ua on u.id = ua.user_id where u.username = ?")
                 .rolePrefix("ROLE_");
-    }
+         */
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
+
+
+        /*JDBC COOKIES AUTHENTICATION CONFIG
+     @Override
+     protected void configure(HttpSecurity http) throws Exception {
         http.requiresChannel().anyRequest().requiresSecure();
         http
                 .headers()
@@ -87,6 +120,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
                 .csrf()
                 .disable();
+
+
     }
     private AuthenticationSuccessHandler successHandler() {
         return new AuthenticationSuccessHandler() {
@@ -113,4 +148,5 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             log.info(e.toString());
         };
     }
-}
+ */
+

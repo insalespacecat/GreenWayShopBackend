@@ -1,7 +1,7 @@
 package com.greenwayshop.learning.services;
 
 import com.greenwayshop.learning.domain.Order;
-import com.greenwayshop.learning.domain.User;
+import com.greenwayshop.learning.domain.AppUser;
 import com.greenwayshop.learning.properties.DiscountProperties;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,7 +14,7 @@ public class DiscountService {
     DiscountProperties discountProperties;
 
     void checkAndUpdateUserDiscountIfRequired(Order order) {
-      User user = order.getUser();
+      AppUser user = order.getUser();
       user.setOrdersTotal(user.getOrdersTotal() + order.getTotal());
       if(user.getOrdersTotal() > discountProperties.getTotalforlevelthree()){
           user.setDiscount(discountProperties.getLevelthree());
