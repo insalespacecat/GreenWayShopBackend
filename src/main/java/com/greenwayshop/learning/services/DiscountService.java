@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 @Service
 @AllArgsConstructor
 public class DiscountService {
-
     UserService userService;
     DiscountProperties discountProperties;
 
@@ -27,20 +26,3 @@ public class DiscountService {
       }
     }
 }
-/*
-  User user = userService.getUserInfoByUsername(username);
-        List<Order> userOrders = orderService.getAllOrdersByUsername(username);
-        double sumRate = 0;
-        for(Iterator iterator = userOrders.iterator(); iterator.hasNext();){
-            Order order = (Order) iterator.next();
-            sumRate += order.getTotal();
-        }
-        if(sumRate >= 200){
-            user.setDiscount(7.0);
-            userService.patchUserInfo(user, user.getName());
-        }
-        if(sumRate >= 500){
-            user.setDiscount(10.0);
-            userService.patchUserInfo(user, user.getName());
-        }
- */

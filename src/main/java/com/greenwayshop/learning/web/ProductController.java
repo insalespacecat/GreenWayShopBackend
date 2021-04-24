@@ -13,26 +13,25 @@ import java.util.List;
 @RequestMapping("/query")
 @AllArgsConstructor
 public class ProductController {
+    private ProductService productService;
 
-        private ProductService productService;
+    @GetMapping(path = "/getProducts", produces="application/json")
+    public List<Product> getProducts() {
+        return productService.getAllProducts();
+    }
 
-        @GetMapping(path = "/getProducts", produces="application/json")
-        public List<Product> getProducts() {
-            return productService.getAllProducts();
-        }
+    @PostMapping(path = "/addProduct", consumes = "application/json")
+    public Product addProduct(@RequestBody Product product){
+        return productService.saveProduct(product);
+    }
 
-        @PostMapping(path = "/addProduct", consumes = "application/json")
-        public Product addProduct(@RequestBody Product product){
-            return productService.saveProduct(product);
-        }
+    @PatchMapping(path="/patch/{productId}", consumes="application/json")
+    public Product patchProduct(@PathVariable("productId") Long productId, @RequestBody Product patch) {
+        return productService.patch(productId, patch);
+    }
 
-        @PatchMapping(path="/patch/{productId}", consumes="application/json")
-        public Product patchProduct(@PathVariable("productId") Long productId, @RequestBody Product patch) {
-            return productService.patch(productId, patch);
-        }
-
-        @DeleteMapping(path = "/delete/{productId}")
-        public void deleteProduct(@PathVariable("productId") Long productId) {
-            productService.deleteProductById(productId);
-        }
+    @DeleteMapping(path = "/delete/{productId}")
+    public void deleteProduct(@PathVariable("productId") Long productId) {
+        productService.deleteProductById(productId);
+    }
 }
