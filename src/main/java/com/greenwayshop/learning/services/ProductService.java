@@ -5,8 +5,11 @@ import com.greenwayshop.learning.domain.Product;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import static com.greenwayshop.learning.services.CheckMethods.checkForEmptyAndThrowResponseTypeExcIfRequired;
 import static com.greenwayshop.learning.services.CheckMethods.checkForNullAndTrowResponseTypeExcIfRequired;
+
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Slf4j

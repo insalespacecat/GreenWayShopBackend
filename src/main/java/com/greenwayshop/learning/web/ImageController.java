@@ -18,6 +18,7 @@ public class ImageController {
 
     @PostMapping(value = "/images/upload/{imageName}", consumes = "multipart/form-data")
     public void uploadAnImage(@RequestParam(name = "file") MultipartFile image, @PathVariable String imageName) throws IOException {
+        log.info("IMAGE NAME: " + image.getName());
         awsS3Service.uploadFileToS3(image, imageName);
     }
 
@@ -25,4 +26,29 @@ public class ImageController {
     public Resource getTheImage(@PathVariable String imageName) throws IOException {
         return awsS3Service.downloadS3Object(imageName);
     }
+
+    /*
+    @DeleteMapping("/images/{imageName}")
+    public void deleteAnImage(@PathVariable String imageName) {
+        this.imageStorageService.delete(imageName);
+    }
+     */
 }
+/*
+ ImageStorageService imageStorageService;
+
+    @PostMapping(value = "/images/upload", consumes = "multipart/form-data")
+    public void uploadAnImage(@RequestParam(name = "file") MultipartFile image){
+        imageStorageService.save(image);
+    }
+
+    @GetMapping("/images/{imageName}")
+    public Resource getTheImage(@PathVariable String imageName){
+        return imageStorageService.load(imageName);
+    }
+
+    @DeleteMapping("/images/{imageName}")
+    public void deleteAnImage(@PathVariable String imageName) {
+        this.imageStorageService.delete(imageName);
+    }
+ */

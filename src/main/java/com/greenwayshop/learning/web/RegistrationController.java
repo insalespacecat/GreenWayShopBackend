@@ -1,6 +1,8 @@
 package com.greenwayshop.learning.web;
 
+
 import com.greenwayshop.learning.domain.RegistrationForm;
+
 import com.greenwayshop.learning.services.RegistrationService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/registration")
 @AllArgsConstructor
 public class RegistrationController {
+
     private RegistrationService registrationService;
 
     @PostMapping(consumes = "application/json")

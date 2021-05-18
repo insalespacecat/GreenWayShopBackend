@@ -1,3 +1,4 @@
+
 package com.greenwayshop.learning.services;
 
 import com.amazonaws.AmazonClientException;
@@ -28,6 +29,10 @@ import java.util.concurrent.Executors;
 @Slf4j
 public class AwsS3Service {
 
+   /* private ResourceLoader resourceLoader;
+    private ServiceProperties serviceProperties;
+    private ImageStorageService imageStorageService;
+    */
     private String bucketName;
     private AmazonS3 amazonS3;
 
@@ -45,6 +50,8 @@ public class AwsS3Service {
     }
 
     public Resource downloadS3Object(String filename) throws IOException {
+
+        log.info("Trying to download the file " + filename);
         try (S3ObjectInputStream inputStream = amazonS3.getObject(bucketName, filename).getObjectContent()) {
             File file = new File(filename);
             FileOutputStream outputStream = new FileOutputStream(file);
@@ -52,12 +59,27 @@ public class AwsS3Service {
             Resource resource = new FileSystemResource(file);
             return resource;
         }
+
+        /*
+        Resource resource = resourceLoader.getResource(serviceProperties.getImageBucketURL() + "/" + filename);
+        return resource;
+         */
+
+        /*
+        try (InputStream inputStream = resource.getInputStream()) {
+            File file = new File(resourceFilename);
+            FileOutputStream outputStream = new FileOutputStream(file);
+            IOUtils.copy(inputStream, outputStream);
+        }
+         */
+
     }
 
 public void uploadFileToS3(MultipartFile multipartFile, String imageName) throws IOException {
         File file = new File(imageName + ".jpg");
         FileOutputStream outputStream = new FileOutputStream(file);
         IOUtils.copy(multipartFile.getInputStream(), outputStream);
+
         int maxUploadThreads = 5;
 
         TransferManager tm = TransferManagerBuilder
@@ -69,16 +91,27 @@ public void uploadFileToS3(MultipartFile multipartFile, String imageName) throws
 
         ProgressListener progressListener =
         progressEvent -> System.out.println("Transferred bytes: " + progressEvent.getBytesTransferred());
+
         PutObjectRequest request = new PutObjectRequest(bucketName, file.getName(), file);
+
         request.setGeneralProgressListener(progressListener);
+
         Upload upload = tm.upload(request);
 
         try {
-            upload.waitForCompletion();
+        upload.waitForCompletion();
+        System.out.println("Upload complete.");
         } catch (AmazonClientException | InterruptedException e) {
-            System.out.println("Error occurred while uploading file");
-            e.printStackTrace();
+        System.out.println("Error occurred while uploading file");
+        e.printStackTrace();
         }
-    }
+        /*WritableResource resource = (WritableResource) resourceLoader
+                .getResource(serviceProperties.getImageBucketURL());
+
+        try (OutputStream outputStream = resource.getOutputStream()) {
+            IOUtils.copy(inputStream, outputStream);
+        }
+        */
+        }
 }
 

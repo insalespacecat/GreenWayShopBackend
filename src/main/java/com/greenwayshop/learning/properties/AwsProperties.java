@@ -8,6 +8,6 @@ import org.springframework.stereotype.Component;
 @ConfigurationProperties(prefix = "aws")
 @Data
 public class AwsProperties {
-    private String accessKey = "AKIAXTA5YW36LLSRWWSU";
-    private String secretKey = "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";
+    private String accessKey = "AKIAXTA5YW36EVRHFFNS";
+    private String secretKey = "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";
 }

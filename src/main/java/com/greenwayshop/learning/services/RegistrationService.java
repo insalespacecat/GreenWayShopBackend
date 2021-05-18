@@ -30,6 +30,7 @@ public class RegistrationService {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Username is occupied");
         }
         AppUser userr = userRepository.save(RegistrationFormToUser(registrationForm));
+        log.info(userr.toString());
     }
     public void registerEmployee(RegistrationForm registrationForm){
         Optional<AppUser> user = Optional.ofNullable(userRepository.findUserByUsername(registrationForm.getUsername()));
@@ -46,12 +47,13 @@ public class RegistrationService {
                 registrationForm.getName(), true, registrationForm.getPhoneNumber(),
                 registrationForm.getShippingAddress(), 0.0, 5.0, Collections.singleton(Authority.CUSTOMER)
         );
+        //user.grantCustomerAuthority();
         return user;
     }
 
     private AppUser RegistrationFormToEmployee(RegistrationForm registrationForm){
         if(!administrationProperties.getEmployeeKey().equals(registrationForm.getEmployeeKey())){
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Employee key is not correct!");
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Employee key is not right!");
         }
         AppUser user = new AppUser(
                 null, registrationForm.getUsername(), passwordEncoder.encode(registrationForm.getPassword()),

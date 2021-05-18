@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @RestController
@@ -14,6 +15,7 @@ import java.util.List;
 @CrossOrigin
 @AllArgsConstructor
 public class OrderController {
+
     private OrderService orderService;
 
     @PostMapping(consumes = "Application/JSON")
@@ -32,8 +34,12 @@ public class OrderController {
         return orderService.getTopSliceForOperatorView();
     }
 
+    //Maybe it should give back Page<T> but it does not quite fit
+    //Angular Material tables and shop is small, which means that
+    //we won't have a harmful situation here if we leave it this way.
     @GetMapping(value = "/getAllOrdersByUsername/{username}")
     public List<Order> getAllOrdersByUser(@PathVariable String username){
+        log.info("Giving back all orders of user " + username);
         return orderService.getAllOrdersByUsername(username);
     }
 
