@@ -4,7 +4,6 @@ import com.auth0.jwt.JWT;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.greenwayshop.learning.domain.AppUser;
 import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -23,7 +22,6 @@ import static com.auth0.jwt.algorithms.Algorithm.HMAC512;
 import static com.greenwayshop.learning.security.SecurityConstants.*;
 
 @AllArgsConstructor
-@Slf4j
 public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     private AuthenticationManager authenticationManager;
 
@@ -54,7 +52,5 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                 .withExpiresAt(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
                 .sign(HMAC512(SECRET.getBytes()));
         res.addHeader(HEADER_STRING, TOKEN_PREFIX + token);
-        res.getWriter().append(token);
-        res.addHeader("Access-Control-Expose-Headers", "Authorization");
     }
 }
