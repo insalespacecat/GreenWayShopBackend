@@ -1,4 +1,3 @@
-
 package com.greenwayshop.learning.services;
 
 import com.amazonaws.AmazonClientException;
@@ -38,8 +37,8 @@ public class AwsS3Service {
 
     AwsS3Service() {
         AWSCredentials awsCredentials = new BasicAWSCredentials(
-                "AKIAXTA5YW36EVRHFFNS",
-                "UxEb+4Wvnzayu6IY9/8HpHuHHzjw5yqYf71nx40j"
+                "AKIAXTA5YW36LLSRWWSU",
+                "26mK2Bk8YY+Yma1QH4qcCzOspnnaxzWA0dd6klZk"
         );
         amazonS3 =  AmazonS3ClientBuilder
                 .standard()
